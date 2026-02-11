@@ -95,7 +95,9 @@ class Visit
                    " -d log_errors=On" .
                    " -d doc_root=$docroot" .
                    " -d cgi.force_redirect=0" .
-                   " -d session.save_path=/tmp $script",
+                   " -d session.save_path=/tmp" .
+                   " -d opcache.jit=disable " .
+                   $script,
                    $desc, $pipes, env_vars:$env);
 
     if ($data !== null) {
