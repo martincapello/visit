@@ -1,0 +1,26 @@
+{
+    "name": "igarastudio/visit",
+    "description": "A library to simulate and test user visits using php-cgi",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Igara Studio S.A."
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/igarastudio/visit/issues"
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "phpunit/phpunit": "^12.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "IgaraStudio\\": "src/"
+        },
+        "files": [
+            "src/Functions.php"
+        ]
+    }
+}
