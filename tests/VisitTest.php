@@ -21,4 +21,15 @@ final class VisitTest extends TestCase
   {
     visit('/')->assertSee('Hello World');
   }
+
+  public function testRedirect(): void
+  {
+    visit('/redirect')->assertRedirect('/destination')
+                      ->assertSee('Final');
+  }
+
+  public function test404(): void
+  {
+    visit('/not-found')->assertStatusCode(404);
+  }
 }
