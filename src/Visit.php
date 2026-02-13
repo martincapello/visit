@@ -130,15 +130,10 @@ class Visit
     }
     if (isset($status_line)) {
       $this->status_code = intval($status_line);
-      if ($this->status_code != 200) {
-        echo "\nStatus: $status_line\n";
-      }
     }
-
     if (!empty($this->stderr)) {
       echo("  STDERR: $this->stderr\n");
     }
-
     return $this;
   }
 
