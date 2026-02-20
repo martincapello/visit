@@ -18,7 +18,8 @@ use function PHPUnit\Framework\assertEquals;
 class Visit
 {
   public static array $shared_options = [ 'docroot' => './public',
-                                          'script' => './public/index.php' ];
+                                          'script' => './public/index.php',
+                                          'followRedirect' => true ];
 
   private array $options;
   private string $method;
@@ -35,6 +36,11 @@ class Visit
       $this->options = array_merge(self::$shared_options, $options);
     else
       $this->options = self::$shared_options;
+  }
+
+  public function setOptions(array $options):Visit {
+    $this->options = array_merge(self::$shared_options, $options);
+    return $this;
   }
 
   public function get(string $path):Visit {
@@ -61,6 +67,13 @@ class Visit
     $this->assertStatusCode(302);
     assertEquals($expected_path, $this->redir_location,
                  "$this->method $this->path : Didn't redirect to $expected_path");
+    return $this;
+  }
+
+  // Useful when followRedirect=false, so we have a function to go the
+  // redirected location. When followRedirect=true the redirection is
+  // automatic.
+  public function followRedirect():Visit {
     return $this->simulateRequest("GET", $this->redir_location);
   }
 
@@ -74,6 +87,7 @@ class Visit
     if (!file_exists($script))
       die("File $script doesn't exist to be called with php-cgi\n");
 
+    $old_redir_location = $this->redir_location;
     $this->status_code = 0;
     $this->redir_location = '';
 
@@ -130,10 +144,19 @@ class Visit
     }
     if (isset($status_line)) {
       $this->status_code = intval($status_line);
+      if ($this->status_code == 302 && $old_redir_location == $this->redir_location) {
+        throw new Exception("Infinite redirection to $this->redir_location");
+      }
     }
+
     if (!empty($this->stderr)) {
       echo("  STDERR: $this->stderr\n");
     }
+
+    // Auto-follow 302 redirections
+    if (!empty($this->redir_location) && ($this->options['followRedirect'] ?? true))
+      $this->followRedirect();
+
     return $this;
   }
 

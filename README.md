@@ -41,7 +41,6 @@ class UserLoginTest extends TestCase
     visit()
       ->post('/login', ['username' => 'valid-username',
                         'password' => 'valid-password'])
-      ->assertRedirect('/dashboard')
       ->assertSee('Dashboard');
   }
 }

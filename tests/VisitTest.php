@@ -24,8 +24,12 @@ final class VisitTest extends TestCase
 
   public function testRedirect(): void
   {
-    visit('/redirect')->assertRedirect('/destination')
-                      ->assertSee('Final');
+    visit('/redirect')->assertSee('Final');
+
+    visit('/redirect', [ 'followRedirect' => false ])
+      ->assertRedirect('/destination')
+      ->followRedirect()
+      ->assertSee('Final');
   }
 
   public function test404(): void
