@@ -63,6 +63,12 @@ class Visit
     return $this;
   }
 
+  public function assertDontSee(string $unexpected_str):Visit {
+    assertTrue(!str_contains($this->body, $unexpected_str),
+               "$this->method $this->path : String '$unexpected_str' was found in output\n\n::group::Body:\n$this->body\n::endgroup::");
+    return $this;
+  }
+
   public function assertRedirect(string $expected_path):Visit {
     $this->assertStatusCode(302);
     assertEquals($expected_path, $this->redir_location,

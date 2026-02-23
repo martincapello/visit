@@ -19,7 +19,8 @@ final class VisitTest extends TestCase
 {
   public function testIndex(): void
   {
-    visit('/')->assertSee('Hello World');
+    visit('/')->assertSee('Hello World')
+              ->assertDontSee('Final');
   }
 
   public function testRedirect(): void
