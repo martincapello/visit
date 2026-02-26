@@ -202,8 +202,10 @@ class Visit
         use function Patchwork\{redefine};
 
         $mocksCode
+
+        include "$script";
         ?>
-      EOD . PHP_EOL . file_get_contents($script));
+      EOD);
 
       return $mockedScript;
   }
