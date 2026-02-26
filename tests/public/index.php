@@ -15,7 +15,15 @@ switch ($_SERVER['REQUEST_URI']) {
     echo 'Final';
     break;
 
+  case '/bye':
+    echo bye_world();
+    break;
+
   default:
     http_response_code(404);
     break;
+}
+
+function bye_world() {
+  return "Bye World";
 }

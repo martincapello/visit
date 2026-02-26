@@ -13,7 +13,8 @@ use IgaraStudio\Visit;
 use function IgaraStudio\visit;
 
 Visit::$shared_options = [ 'docroot' => __DIR__ . '/public',
-                           'script' => __DIR__ . '/public/index.php' ];
+                           'script' => __DIR__ . '/public/index.php',
+                           'patchwork' => __DIR__ . '/../vendor/antecedent/patchwork/Patchwork.php'];
 
 final class VisitTest extends TestCase
 {
@@ -36,5 +37,17 @@ final class VisitTest extends TestCase
   public function test404(): void
   {
     visit('/not-found')->assertStatusCode(404);
+  }
+
+  public function testMocking(): void
+  {
+    visit('/bye')
+      ->assertSee('Bye World')
+      ->mock('bye_world', 'function() { return "I\'m a mock!"; }')
+      ->get('/bye')
+      ->assertSee("I'm a mock!")
+      ->unmock('bye_world')
+      ->get('/bye')
+      ->assertSee('Bye World');
   }
 }
