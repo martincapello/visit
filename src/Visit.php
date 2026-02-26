@@ -100,7 +100,7 @@ class Visit
     $env = array_merge(getenv(),
                        ['REQUEST_METHOD' => $method,
                         'REQUEST_URI' => $path,
-                        'SCRIPT_NAME' => '/index.php',
+                        'SCRIPT_NAME' => basename($script),
                         'SCRIPT_FILENAME' => $script,
                         'CONTENT_LENGTH' => ($data ? strlen($data): 0),
                         'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
