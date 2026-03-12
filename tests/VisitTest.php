@@ -50,4 +50,11 @@ final class VisitTest extends TestCase
       ->get('/bye')
       ->assertSee('Bye World');
   }
+
+  public function testPostJson(): void
+  {
+    visit()->postJson("/json",
+                      ["first_name" => "John", "last_name" => "Doe"])
+           ->assertSee('application/json: {"first_name":"John","last_name":"Doe"}');
+  }
 }

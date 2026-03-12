@@ -19,6 +19,10 @@ switch ($_SERVER['REQUEST_URI']) {
     echo bye_world();
     break;
 
+  case '/json':
+    echo "{$_SERVER['CONTENT_TYPE']}: ". file_get_contents('php://input');
+    break;
+
   default:
     http_response_code(404);
     break;

@@ -48,8 +48,22 @@ class Visit
     return $this->simulateRequest("GET", $path);
   }
 
-  public function post(string $path, array $data):Visit {
-    return $this->simulateRequest("POST", $path, http_build_query($data));
+  public function post(string $path, array|string $data, string $content_type = 'application/x-www-form-urlencoded'):Visit {
+    if (is_array($data)) {
+      switch($content_type) {
+        case "application/x-www-form-urlencoded":
+          $data = http_build_query($data);
+          break;
+        case "application/json":
+          $data = json_encode($data);
+          break;
+      }
+    }
+    return $this->simulateRequest("POST", $path, $data, $content_type);
+  }
+
+  public function postJson(string $path, array|string $data):Visit {
+    return $this->post($path, $data, "application/json");
   }
 
   public function assertStatusCode(int $expected_code):Visit {
@@ -98,7 +112,10 @@ class Visit
     return $this->simulateRequest("GET", $this->redir_location);
   }
 
-  private function simulateRequest(string $method, string $path, ?string $data = null):Visit {
+  private function simulateRequest(string $method,
+                                   string $path,
+                                   ?string $data = null,
+                                   string $content_type = 'application/x-www-form-urlencoded'):Visit {
     $this->method = $method;
     $this->path = $path;
 
@@ -121,7 +138,7 @@ class Visit
                         'SCRIPT_NAME' => basename($script),
                         'SCRIPT_FILENAME' => $script,
                         'CONTENT_LENGTH' => ($data ? strlen($data): 0),
-                        'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
+                        'CONTENT_TYPE' => $content_type,
                         'HTTP_COOKIE' => (!empty($this->cookies) ? implode('; ', $this->cookies) . ';': '')]);
 
     $desc = [["pipe", "r"],
