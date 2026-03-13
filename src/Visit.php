@@ -192,6 +192,10 @@ class Visit
         throw new \Exception("Infinite redirection to $this->redir_location");
       }
     }
+    // If no Status header is sent, assume status code 200.
+    else {
+      $this->status_code = 200;
+    }
 
     if (!empty($this->stderr)) {
       echo("  STDERR: $this->stderr\n");
