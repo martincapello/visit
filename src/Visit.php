@@ -152,6 +152,7 @@ class Visit
                    " -d cgi.force_redirect=0" .
                    " -d session.save_path=/tmp" .
                    " -d opcache.jit=disable " .
+                   " -d cgi.nph=1" .
                    $script,
                    $desc, $pipes, env_vars:$env);
 
