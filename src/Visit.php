@@ -135,6 +135,7 @@ class Visit
     $env = array_merge(getenv(),
                        ['REQUEST_METHOD' => $method,
                         'REQUEST_URI' => $path,
+                        'QUERY_STRING' => parse_url($path, PHP_URL_QUERY),
                         'SCRIPT_NAME' => basename($script),
                         'SCRIPT_FILENAME' => $script,
                         'CONTENT_LENGTH' => ($data ? strlen($data): 0),
