@@ -1,6 +1,8 @@
 <?php
 
-switch ($_SERVER['REQUEST_URI']) {
+// Get the path without the query string.
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+switch ($path) {
 
   case '/':
     echo 'Hello World';
@@ -21,6 +23,10 @@ switch ($_SERVER['REQUEST_URI']) {
 
   case '/json':
     echo "{$_SERVER['CONTENT_TYPE']}: ". file_get_contents('php://input');
+    break;
+
+  case '/query':
+    echo "v1: {$_GET['v1']}; v2: {$_GET['v2']}; v3: {$_POST['v3']}";
     break;
 
   default:

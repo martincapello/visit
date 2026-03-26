@@ -57,4 +57,10 @@ final class VisitTest extends TestCase
                       ["first_name" => "John", "last_name" => "Doe"])
            ->assertSee('application/json: {"first_name":"John","last_name":"Doe"}');
   }
+
+  public function testPostWithQueryString(): void
+  {
+    visit()->post('/query?v1=abcd&v2=300', ["v3" => "45.6"])
+           ->assertSee("v1: abcd; v2: 300; v3: 45.6");
+  }
 }
